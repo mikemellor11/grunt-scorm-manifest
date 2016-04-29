@@ -19,7 +19,11 @@ module.exports = function(grunt) {
             SCOtitle: 'SCO Title',
             moduleTitle: 'Module',
             launchPage: 'index.html',
-            path: './'
+            path: './',
+            completionSetByContent: true,
+            objectiveSetByContent: true,
+            satisfiedByMeasure: true,
+            masteryScore: false
         });
         
         //Instantiate XML tokens
@@ -32,17 +36,45 @@ module.exports = function(grunt) {
                 {'@href': options.launchPage}
             ]
         };
+
+        var objectives;
         
         //Check version and set appropriate tokens
         switch(options.version.toLowerCase()) {
           case "1.2":
             xmlTokens.versionString = '1.2';
             xmlTokens.scormType = 'adlcp:scormtype';
+
+            if(options.masteryScore){
+                objectives = {
+                    "adlcp:masteryscore": options.masteryScore
+                };
+            }
+
             break;
           case "2004": //fallthrough
           case "2004v3":
             xmlTokens.versionString = '2004 3rd Edition';
             xmlTokens.scormType = 'adlcp:scormType';
+
+            objectives = {
+                "imsss:sequencing": {
+                    "imsss:deliveryControls": {
+                        "@completionSetByContent": options.completionSetByContent,
+                        "@objectiveSetByContent": options.objectiveSetByContent
+                    }
+                }
+            };
+
+            if(options.masteryScore){
+                objectives["imsss:sequencing"]["imsss:objectives"] = {
+                    "imsss:primaryObjective": {
+                        "@satisfiedByMeasure": options.satisfiedByMeasure,
+                        "imsss:minNormalizedMeasure": options.masteryScore
+                    }
+                }
+            }
+
             break;
         }
         
@@ -108,7 +140,14 @@ module.exports = function(grunt) {
                 resource: xmlTokens.fileArr,
             }
           },
-        };    
+        };
+
+        //
+
+        for(var key in objectives){
+            xmlObj.manifest.organizations.organization.item[key] = objectives[key];  
+            break;
+        }
        
        //Instatiate xmlbuilder using xmlObj
         var xmlDoc = require('xmlbuilder').create(xmlObj, 

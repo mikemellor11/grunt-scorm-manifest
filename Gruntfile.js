@@ -43,11 +43,11 @@ module.exports = function(grunt) {
       custom_options: {
         options: {
           version: '1.2',
-		  courseId: 'MyCourseId',
-		  SCOtitle: 'Learning Course A1000',
-		  moduleTitle: 'AU',
-		  launchPage: 'launchpage.htm',
-		  path: './'
+    		  courseId: 'MyCourseId',
+    		  SCOtitle: 'Learning Course A1000',
+    		  moduleTitle: 'AU',
+    		  launchPage: 'launchpage.htm',
+    		  path: './'
         },
         files: [{
 					expand: true, 
