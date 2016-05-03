@@ -69,6 +69,7 @@ module.exports = function(grunt) {
             if(options.masteryScore){
                 objectives["imsss:sequencing"]["imsss:objectives"] = {
                     "imsss:primaryObjective": {
+                        "@objectiveID": "PRIMARYOBJ",
                         "@satisfiedByMeasure": options.satisfiedByMeasure,
                         "imsss:minNormalizedMeasure": options.masteryScore
                     }
@@ -128,10 +129,12 @@ module.exports = function(grunt) {
                 '@default': options.courseId + '-org',
                 organization: {
                     '@identifier': options.courseId + '-org',
+                    '@adlseq:objectivesGlobalToSystem': false,
                     title: options.SCOtitle,
                     item: {
                       '@identifier': 'item_1',
                       '@identifierref': 'resource_1',
+                      '@isvisible': true,
                       title: options.moduleTitle
                     }
               }
