@@ -107,7 +107,7 @@ module.exports = function(grunt) {
                 } else {
                     var tObj = {
                         file: {
-                            '@href': filepath,
+                            '@href': f.dest,
                         },
                     };
                     xmlTokens.fileArr.push(tObj);
@@ -129,7 +129,6 @@ module.exports = function(grunt) {
                 '@default': options.courseId + '-org',
                 organization: {
                     '@identifier': options.courseId + '-org',
-                    '@adlseq:objectivesGlobalToSystem': false,
                     title: options.SCOtitle,
                     item: {
                       '@identifier': 'item_1',
@@ -149,6 +148,16 @@ module.exports = function(grunt) {
 
         for(var key in objectives){
             xmlObj.manifest.organizations.organization.item[key] = objectives[key];  
+            break;
+        }
+
+        //Check version and set appropriate manifest attributes
+        switch(options.version.toLowerCase()) {
+          case "1.2":
+            break;
+          case "2004": //fallthrough
+          case "2004v3":
+            xmlObj.manifest.organizations.organization['@adlseq:objectivesGlobalToSystem'] = false;
             break;
         }
        
